@@ -398,48 +398,7 @@ class CosineAnnealingLRWithRestart(_LRScheduler):
             self.t_end = self.n_mult * self.t_end
 
 
-class CircularBuffer:
-    def __init__(self, size):
-        self.max_size = size
-        self.data = np.zeros(self.max_size)
-        self.size = 0
-        self.pointer = -1
+ 
 
-    def add(self, element):
-        self.size = min(self.size + 1, self.max_size)
-        self.pointer = (self.pointer + 1) % self.max_size
-        self.data[self.pointer] = element
-        return element
-
-    def last(self):
-        assert self.pointer != -1, "Can't get an element from an empty buffer!"
-        return self.data[self.pointer]
-
-    def mean(self):
-        return self.data.mean()
-
-
-class Logger(UserList):
-    def __init__(self, data=None):
-        super().__init__()
-        self.sdata = defaultdict(list)
-        for step in (data or []):
-            self.append(step)
-
-    def __getitem__(self, key):
-        if isinstance(key, int):
-            return self.data[key]
-        elif isinstance(key, slice):
-            return Logger(self.data[key])
-        else:
-            ldata = self.sdata[key]
-            if isinstance(ldata[0], dict):
-                return Logger(ldata)
-            else:
-                return ldata
-
-    def append(self, step_dict):
-        super().append(step_dict)
-        for k, v in step_dict.items():
-            self.sdata[k].append(v)
+ 
 
