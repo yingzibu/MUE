@@ -198,58 +198,8 @@ def collect_data(names:list, clean_mol_=False, verbose=False):
             trains = trains.merge(train, how='outer')
             valids = valids.merge(valid, how='outer')
             tests = tests.merge(test, how='outer')
-    # if 'Lipophilicity_AstraZeneca' in trains.columns:
-    #     try:
-    #         name = 'Lipophilicity_AstraZeneca'
-    #         trains[name] = trains[name].mul(-1)
-    #         valids[name] = valids[name].mul(-1)
-    #         tests[name] = tests[name].mul(-1)
-    #     except: pass
+
     return trains, valids, tests
-
-# def collect_data(names:list, clean_mol_=False, verbose=False):
-#     from tdc.single_pred import ADME
-#     from tdc.single_pred import Tox
-#     from tdc.utils import retrieve_label_name_list
-#     label_list = retrieve_label_name_list('herg_central')
-#     def rename_cols(df, name): return df.rename(columns={'Y':name})
-
-#     if isinstance(names, str): names = [names]
-#     name_adme = ['Caco2_Wang', 'Lipophilicity_AstraZeneca',
-#                  'HydrationFreeEnergy_FreeSolv',
-#                  'Solubility_AqSolDB'] # regression task
-#     name_adme+= ['CYP2C19_Veith', 'CYP2D6_Veith', 'CYP3A4_Veith',
-#                 'CYP1A2_Veith', 'CYP2C9_Veith'] + \
-#                 ['BBB_Martins', 'Bioavailability_Ma', 'Pgp_Broccatelli',
-#                  'HIA_Hou','PAMPA_NCATS'] # classify
-#     print('collect data for: ', names)
-#     label_list = retrieve_label_name_list('herg_central')
-#     for i, name in enumerate(names):
-#         if verbose: print('*'*15, name, '*'*15)
-#         if name in label_list: data = Tox(name='herg_central', label_name=name)
-#         elif name in name_adme: data = ADME(name=name)
-#         else:
-#             try: data = Tox(name=name)
-#             except: print('cannot read data!'); return
-#             if verbose: data.label_distribution()
-#             # data.label_distribution()
-#         split = data.get_split()
-#         train, valid, test = split['train'], split['valid'], split['test']
-#         if clean_mol_:
-#             train,valid,test = clean_mol(train),clean_mol(valid),clean_mol(test)
-
-#         train = rename_cols(train[['Drug', 'Y']], name)
-#         valid = rename_cols(valid[['Drug', 'Y']], name)
-#         test  = rename_cols(test[['Drug', 'Y']],  name)
-
-#         if i == 0: 
-#             trains, valids, tests = train.copy(), valid.copy(), test.copy()
-#         else:
-#             trains = trains.merge(train, how='outer')
-#             valids = valids.merge(valid, how='outer')
-#             tests = tests.merge(test, how='outer')
-
-#     return trains, valids, tests
 
 def collect_smiles(name='MOSES'):
     from tdc.generation import MolGen
