@@ -15,25 +15,8 @@ from torch.utils.data import DataLoader, Dataset
 import yaml
 import pandas as pd
 
-# from scripts.func_utils import make_path, convert_with_qed_sa, get_min, \
-#                                 plot_loss, plot_performance
-
-# from scripts.eval_utils import *
-# from scripts.preprocess_mols import *
-
-# from scripts.model_architecture import *
-# from scripts.dataset import *
-
 from scripts.CONSTANT import *
 from scripts.train import *
-
-# from scripts.get_vocab import *
-
-# from tdc.single_pred import ADME
-# from tdc.single_pred import Tox
-
-# from scripts.yaml_utils import *
-# from scripts.TRAIN import *
 
 class ensemble_dataset(Dataset):
     def __init__(self, df, task_name, mask=MASK,
