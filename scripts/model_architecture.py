@@ -53,29 +53,6 @@ class Classifier(nn.Module):
         if ensemble_here == True: x = x.view(batch_size, num_tasks)
         return x
 
-    # def forward(self, x, y=None, IS_R=None, return_pred=True):
-    #     for layer in self.hidden: x = F.relu(layer(x))
-    #     x = self.dropout(x)
-    #     x = self.final(x)
-    #     if return_pred: return x
-    #     if y != None and IS_R != None:
-    #         mask = y == MASK
-    #         weight_loss = [1/len(IS_R)] * len(IS_R)
-    #     else: print('Error, need provide label and IS_R'); return
-    #     for j, (is_r, w) in enumerate(zip(IS_R, weight_loss)):
-    #         loss_func = get_loss_fn(is_r)
-    #         probs = x[:,j][~mask[:,j]]
-    #         label = y[:,j][~mask[:,j]]
-    #         len_here = label.shape[0]
-    #         loss_here = loss_func(probs, label)
-    #         if len_here != 0:
-    #             loss_here /= len_here
-    #         if j == 0: loss = loss_here * w
-    #         else: loss += loss_here * w
-    #     # classify_loss  = loss_func(x[~mask], y[~mask])
-    #     return x, loss
-
-
     def get_dim(self): return self.dims
 
 
@@ -177,43 +154,6 @@ class RNN(nn.Module):
         x = torch.cat(x.split(1), dim=-1).squeeze(0)
         for layer in self.fc: x = F.relu(layer(x))
         return self.final(x)
-
-# class RNNEncoder(nn.Module):
-#     def __init__(self, **config):
-#         super(RNNEncoder, self).__init__()
-#         self.vocab = config['vocab']
-#         n_vocab = len(self.vocab)
-#         self.bidir = config['Bidirect']
-#         self.device = config['device']
-#         self.GRU_dim = config['GRU_dim']
-        
-#         self.num_layers = config['num_layers']
-#         self.vocab_type = config['vocab_type']
-#         self.c2i, self.i2c = get_c2i_i2c(self.vocab)
-        
-#         self.x_emb = nn.Embedding(n_vocab, n_vocab, self.c2i['<pad>'])
-#         self.x_emb.weight.data.copy_(torch.eye(n_vocab).to(self.device))
-
-#         self.gru = nn.GRU(n_vocab, self.GRU_dim, num_layers=self.num_layers,
-#                     batch_first=True, bidirectional=self.bidir,
-#                     dropout=config['dropout'] if self.num_layers>1 else 0)
-#         self.hid_dim = self.GRU_dim * (2 if self.bidir else 1)
-#         if 'z_dim' not in config: self.z_dim = self.GRU_dim
-#         else: self.z_dim = config['z_dim']
-#         self.mu = nn.Linear(self.hid_dim, self.z_dim)
-#         self.logvar = nn.Linear(self.hid_dim, self.z_dim)
-
-#     def forward(self, x, y=None):
-#         x = x.to(self.device)
-#         x = [self.x_emb(i_x) for i_x in x]
-#         x = nn.utils.rnn.pack_sequence(x)
-#         _, x = self.gru(x, None)
-#         x = x[-(1 + int(self.gru.bidirectional)):]
-#         x = torch.cat(x.split(1), dim=-1).squeeze(0)
-#         mu, logvar = self.mu(x), self.logvar(x)
-#         # x, kl_loss = self.reparam(mu, logvar)
-#         # del logvar
-#         return mu, logvar
 
 class RNNEncoder(nn.Module):
     def __init__(self, **config):
