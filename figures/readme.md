@@ -1,4 +1,9 @@
-RNN VAE latent space visualization, 5 Metabolism tasks were trained simultaneously
+#### Benefits of using Multitask: save parameter and runtime efficient
+![](param_runtime.png)
+
+
+
+#### RNN VAE latent space visualization, 5 Metabolism tasks were trained simultaneously
  
  | PCA | CYP2C19   |  CYP2D6  | CYP3A4| CYP1A2 | CYP2C9
 :-----:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
