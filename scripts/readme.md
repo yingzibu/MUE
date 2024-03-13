@@ -26,5 +26,9 @@ print('cuda: ', torch.cuda.is_available())
 ! pip install DeepPurpose --quiet
 ! pip install git+https://github.com/bp-kelley/descriptastorus --quiet
 ! pip install pandas-flavor --quiet
+
+# specific for chemberta
+!pip uninstall transformers -y
+!pip install transformers==4.30.2 --quiet
 ```
 
